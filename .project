@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>images</name>
+	<comment></comment>
+	<projects>
+		<project>animation</project>
+		<project>clustering</project>
+		<project>core</project>
+		<project>core-aop-support</project>
+		<project>core-audio</project>
+		<project>core-citation</project>
+		<project>core-feature</project>
+		<project>core-image</project>
+		<project>core-math</project>
+		<project>core-video</project>
+		<project>image-local-features</project>
+		<project>image-processing</project>
+		<project>nearest-neighbour</project>
+		<project>test-resources</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>

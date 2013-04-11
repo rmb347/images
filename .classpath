@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="src" path="/image-local-features"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/home/rahul/Downloads/weka.jar"/>
+	<classpathentry kind="src" path="/core-image"/>
+	<classpathentry kind="src" path="/core-feature"/>
+	<classpathentry kind="lib" path="/image-local-features/target/image-local-features-1.1.1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="/image-local-features/target/image-local-features-1.1.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/core/target/core-1.1.1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="/core/target/core-1.1.1-SNAPSHOT.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/animation"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/clustering"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core-aop-support"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core-audio"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core-citation"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core-experiment"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core-math"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core-video"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/image-feature-extraction"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/image-processing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/IREval"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/machine-learning"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nearest-neighbour"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/test-resources"/>
+	<classpathentry kind="src" path="/faces"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
