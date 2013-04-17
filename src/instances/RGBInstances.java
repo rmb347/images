@@ -20,6 +20,7 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.openimaj.feature.local.list.LocalFeatureList;
@@ -45,6 +46,7 @@ public class RGBInstances {
 	int nf;
 	
 	Instances header;
+	HashMap<String,String> url2access = new HashMap<String, String>();
 	
 	public RGBInstances(){
 	}
@@ -62,9 +64,12 @@ public class RGBInstances {
 				DataInputStream in = new DataInputStream(inputStream);
 				BufferedReader br = new BufferedReader(
 						new InputStreamReader(in));
-				String url = null;
-				while ((url = br.readLine()) != null) {
-					URls.add(url);
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					String[] splitline = line.split(",");
+					URls.add(splitline[1]);
+					String access = getAccess(splitline[2]);
+					url2access.put(splitline[1], access);
 				}
 				in.close();
 				br.close();
@@ -77,6 +82,15 @@ public class RGBInstances {
 		return URls;
 	}
 	
+	private String getAccess(String string) {
+		if ( string.contains("private"))
+		{
+			return "private";
+		}
+		
+		return "public";
+	}
+
 	public void setHeader(){
 		
 		FastVector attrInfo = new FastVector();
@@ -110,6 +124,7 @@ public class RGBInstances {
 				List<KEDetectedFace> faces = fd.detectFaces( query.flatten());
 				
 				FW.write("{");
+				FW.write(URL + ", ");
 				for ( KEDetectedFace kd : faces)
 				{
 					
@@ -142,7 +157,7 @@ public class RGBInstances {
 					FW.write("}");
 					
 				}
-				FW.write( " \"" + URL + "\"}\n");
+				FW.write( " \"" + url2access.get(URL) + "\"}\n");
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -162,6 +177,7 @@ public class RGBInstances {
 				LocalFeatureList <Keypoint > queryKeypoints = engine.findFeatures(query.flatten());
 				List<Keypoint>keys =  queryKeypoints.subList(0, queryKeypoints.size()-1);
 				FW.write("{");
+				FW.write(URL + ", ");
 				for ( Keypoint k : keys)
 				{
 					//System.out.println("in sift");
@@ -181,7 +197,7 @@ public class RGBInstances {
 					}
 					FW.write("}");
 				}
-				FW.write(" \"" + URL + "\"}\n");
+				FW.write(" \"" + url2access.get(URL) +"\"}\n");
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -202,6 +218,7 @@ public class RGBInstances {
 				edch.analyseImage(fmg);
 				double [] dblarr = edch.getFeatureVector().values;
 				FW.write("{");
+				FW.write(URL + ", ");
 				FW.write( new Double( edch.getCoherenceFactor()) .toString());
 				for ( double d : dblarr)
 				{
@@ -216,7 +233,7 @@ public class RGBInstances {
 					FW.write(i + ", ");
 				}
 				FW.write("}");
-				FW.write( fmg.toPackedARGBPixels().length + " \"" + URL + "\"}\n");
+				FW.write( fmg.toPackedARGBPixels().length + " \"" +url2access.get(URL) + "\"}\n");
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -232,17 +249,19 @@ public class RGBInstances {
 		FileWriter FW = new FileWriter(fileOut);
 		
 		FW.write(header.toString() + "\n\n");
+		
 		for (String URL : URLs)
 		{
+			
 			//RGB features
 			int[] vector = this.getVector( URL );
-			
 			FW.write("{");
+			FW.write(URL + ", ");
 			for (int j = 0; j < vector.length; j ++){
 				if(vector[j] != 0)
 					FW.write(j + " " + vector[j] + ", ");
 			}
-			FW.write(vector.length + " \"" + URL + "\"}\n");
+			FW.write(vector.length + " \"" + url2access.get(URL) + "\"}\n");
 		}
 		FW.close();
 	}
@@ -252,7 +271,6 @@ public class RGBInstances {
 		int[] vector = new int[nf];
 		
 		int[][] values = new int[CONSTANT.numFeatures][CONSTANT.numValues];	//[0][]=red  [1][]=green [2][]=blue etc
-		
 		values = ImageUtils.extractRGB(img_path);
 		
 		int k = 0;
@@ -269,7 +287,7 @@ public class RGBInstances {
 	public static void main(String[] args){
 
 		String path = "/home/rahul/images/src/data/";
-		File csvFile = new File(path+"ALL_out_5000.csv");
+		File csvFile = new File("/home/rahul/MT_out.csv");
 		//String picture = "/Users/cornelia/Desktop/AD/data/train_images/explosion.jpg";
 		//@SuppressWarnings("unused")
 		//int[][] values = Utils.extractRGB(picture);
@@ -296,9 +314,9 @@ public class RGBInstances {
 		List<String> URLs = iRep.getStaticURL(csvFile);
 		try {
 			iRep.getRGBRepresentation(URLs, path, fileOut);
-			iRep.getSIFTFeatures(URLs, path, fileOut);
-			iRep.getEdgeDirectionCoherenceFeatures(URLs, path, fileOut);
-			iRep.getFacialFeatures(URLs, path, fileOut);
+			iRep.getSIFTFeatures(URLs, path, path+ "SIFT.arff");
+			iRep.getEdgeDirectionCoherenceFeatures(URLs, path, path+"EDGC.arff");
+			iRep.getFacialFeatures(URLs, path, path+"Facial.arff");
 			
 			
 		} catch (Exception e) {
